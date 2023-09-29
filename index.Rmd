@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
-author: "Your Name Here"
-description: "My final project"
+author: "Julia Dan"
+description: "Gov 50 Final Project"
 output:
   distill::distill_article:
     self_contained: false
@@ -11,4 +11,4 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to...
+For my final project in Gov 50, I'd like to investigate data relating to the rate at which immigrants within the United States move back to their home country. I'd like to see whether there is a trend among immigrants from a certain world region returning to their country of origin as well as the ages at which an individual is more likely to return. Ultimately, I am interested in this field of inquiry because of my own familial background and trends I see among people of my community. I hope to run into incongruences in my data, and figure out how/why these come about. I hope to gather my data from the Migration Policy Institute (and various similar websites), and narrow down my data by year and region of the world (I might focus on Europe and other regions of high immigration). Through my analysis, I hope to at least see spikes in the volume of immigration to the United States by year in order to support my hypothesis that, while there is an overall increase in immigration since X year, there is also an increase of ex-patriots returning home. 
