@@ -42,3 +42,33 @@ ggplot(data = filtered_scores, aes(x = ...2, y = ...4)) +
   labs(x = "Justice Code", y = "Mean Ideology") +
   ggtitle("Scatter Plot of Justice Name vs. Mean Ideology")
 ```
+
+
+
+```{r}
+library(readxl)
+scores <- read_excel("~/Desktop/scores.xlsx")
+View(scores)
+
+install.packages("readxl")
+install.packages("writexl")
+```
+```{r}
+getwd()
+```
+
+
+```{r}
+library(readxl)
+setwd("/Users/juliadan/Gov 50 Final Project")
+```
+```{r}
+scores <- read_excel("~/Desktop/scores.xlsx")
+View(scores)
+```
+
+```{r}
+library(writexl)
+write_xlsx(scores, "scores_modified.xlsx")
+```
+
