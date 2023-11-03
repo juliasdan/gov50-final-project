@@ -23,6 +23,11 @@ Milestone 3:
 A few things were re-worked in this iteration of my final project. For one, I am using a different data set that shows Supreme Court Justices and their ideology (according to Martin-Quinn judicial ideology scores) from 1937-2015. In this visualization, I tried to show the ideology of justices only from 2015. My data source can be found here: http://scdb.wustl.edu/documentation.php?var=issueArea and here: https://www.kaggle.com/datasets/umichigan/court-justices/.
 
 ```{r}
+library(readxl)
+scores <- read_excel("~/Desktop/scores.xlsx")
+```
+
+```{r}
 library(ggplot2)
 library(tidyverse)
 ```
@@ -32,7 +37,7 @@ justices_2015 <- c("Anthony Kennedy", "Antonin Scalia", "Clarence Thomas", "Elen
 ```
 
 ```{r}
-filtered_scores <- scores_modified |>
+filtered_scores <- scores |>
   filter(scores == 2015)
 ```
 
@@ -44,35 +49,4 @@ ggplot(data = filtered_scores, aes(x = ...2, y = ...4)) +
 ```
 
 
-
-```{r}
-library(readxl)
-scores <- read_excel("~/Desktop/scores.xlsx")
-View(scores)
-
-install.packages("readxl")
-install.packages("writexl")
-```
-```{r}
-getwd()
-```
-
-
-```{r}
-library(readxl)
-setwd("/Users/juliadan/Gov 50 Final Project")
-```
-```{r}
-scores <- read_excel("~/Desktop/scores.xlsx")
-View(scores)
-```
-
-```{r}
-library(writexl)
-write_xlsx(scores, "scores_modified.xlsx")
-```
-
-```{r}
-
-```
 

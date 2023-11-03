@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["gov50final_files/anchor-4.2.2/anchor.min.js","gov50final_files/bowser-1.9.3/bowser.min.js","gov50final_files/distill-2.2.21/template.v2.js","gov50final_files/figure-html5/unnamed-chunk-5-1.png","gov50final_files/header-attrs-2.24/header-attrs.js","gov50final_files/jquery-3.6.0/jquery-3.6.0.js","gov50final_files/jquery-3.6.0/jquery-3.6.0.min.js","gov50final_files/jquery-3.6.0/jquery-3.6.0.min.map","gov50final_files/popper-2.6.0/popper.min.js","gov50final_files/tippy-6.2.7/tippy-bundle.umd.min.js","gov50final_files/tippy-6.2.7/tippy-light-border.css","gov50final_files/tippy-6.2.7/tippy.css","gov50final_files/tippy-6.2.7/tippy.umd.min.js","gov50final_files/webcomponents-2.0.0/webcomponents.js","gov50final.html","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/scores/scores_modified.xlsx","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","scores_modified.xlsx"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1548,6 +1548,40 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>Milestone 2: Finding data and writing a proposal (due 10/13)
 Proposal:
 To what extent is immigration judge ideology correlated to the rate at which asylum is granted? In this study, I plan to answer this question, examining the relationship between different immigration judges’ characteristics (namely ideology and the party to which Congress belongs) influences the influx of immigrants into the United States. I hypothesize that a more democratic congress and liberal ideology score will result in higher immigration. I also plan to take in gender as well as English-speaking/non-English speaking status as a possible influence, should I find little correlation solely on ideology. These other variables do indicate a certain bias that could be connected with judge implicit ideology and decision-making. My sample is comprised of continuous counters of months elapsed starting with January 1990 as 1 and running through December 2010 as 252 based on the date the applicant’s case was decided. My explanatory variable of interest is ideology, and is based on the individual-level asylum_liberalism score; which ranges from 0.95 to 1.39 where higher scores indicating a greater proclivity to grant an applicant asylum. My outcome variable of interest is Ij_total_grants_relief: total grants of relief (including asylum and either type of withholding) by IJs in a given month. The observable pattern in my data that would prove my hypothesis is higher ideology scores correlate to higher total grants for relief. If this correlation is not seen, or even if a correlation between a Democratic Congress and more asylum acceptance is not seen, this would disprove my hypothesis completely.</p>
+<p>Milestone 3:
+A few things were re-worked in this iteration of my final project. For one, I am using a different data set that shows Supreme Court Justices and their ideology (according to Martin-Quinn judicial ideology scores) from 1937-2015. In this visualization, I tried to show the ideology of justices only from 2015. My data source can be found here: <a href="http://scdb.wustl.edu/documentation.php?var=issueArea" class="uri">http://scdb.wustl.edu/documentation.php?var=issueArea</a> and here: <a href="https://www.kaggle.com/datasets/umichigan/court-justices/" class="uri">https://www.kaggle.com/datasets/umichigan/court-justices/</a>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readxl.tidyverse.org'>readxl</a></span><span class='op'>)</span></span>
+<span><span class='va'>scores</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"~/Desktop/scores.xlsx"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>justices_2015</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Anthony Kennedy"</span>, <span class='st'>"Antonin Scalia"</span>, <span class='st'>"Clarence Thomas"</span>, <span class='st'>"Elena Kagan"</span>, <span class='st'>"John Roberts"</span>, <span class='st'>"Ruth Bader Ginsburg"</span>, <span class='st'>"Samuel Alito"</span>, <span class='st'>"Sonia Sotomayor"</span>, <span class='st'>"Stephen Breyer"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>filtered_scores</span> <span class='op'>&lt;-</span> <span class='va'>scores</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>scores</span> <span class='op'>==</span> <span class='fl'>2015</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>filtered_scores</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>...2</span>, y <span class='op'>=</span> <span class='va'>...4</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Justice Code"</span>, y <span class='op'>=</span> <span class='st'>"Mean Ideology"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ggtitle</a></span><span class='op'>(</span><span class='st'>"Scatter Plot of Justice Name vs. Mean Ideology"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
