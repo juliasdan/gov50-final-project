@@ -1582,6 +1582,107 @@ A few things were re-worked in this iteration of my final project. For one, I am
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
 </div>
+<p>Milestone 4:</p>
+<p>For this milestone, I’ve decided to visualize these 4 variables in a tibble, including the Standard Deviation of the mean ideology I can later use this to figure out the spread of the Justices’ left or right-leaning tendencies over the course of 70+ years.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-datatable.com'>data.table</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>scores</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span>  JusticeName <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Anthony Kennedy"</span>, <span class='st'>"Antonin Scalia"</span>, <span class='st'>"Clarence Thomas"</span>, <span class='st'>"Elena Kagan"</span>, <span class='st'>"John Roberts"</span>, <span class='st'>"Ruth Bader Ginsburg"</span>, <span class='st'>"Samuel Alito"</span>, <span class='st'>"Sonia Sotomayor"</span>, <span class='st'>"Stephen Breyer"</span><span class='op'>)</span>,</span>
+<span>  JusticeCode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AK"</span>, <span class='st'>"AS"</span>, <span class='st'>"CT"</span>, <span class='st'>"EK"</span>, <span class='st'>"JR"</span>, <span class='st'>"RBG"</span>, <span class='st'>"SA"</span>, <span class='st'>"SS"</span>, <span class='st'>"SB"</span><span class='op'>)</span>,</span>
+<span>  MeanIdeology <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1.2</span>, <span class='fl'>2.5</span>, <span class='fl'>3.1</span>, <span class='fl'>0.8</span>, <span class='fl'>1.5</span>, <span class='op'>-</span><span class='fl'>0.3</span>, <span class='fl'>2.8</span>, <span class='op'>-</span><span class='fl'>1.0</span>, <span class='fl'>0.2</span><span class='op'>)</span>,</span>
+<span>  Year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2015</span>, <span class='fl'>2015</span>, <span class='fl'>2015</span>, <span class='fl'>2015</span>, <span class='fl'>2015</span>, <span class='fl'>2015</span>, <span class='fl'>2015</span>, <span class='fl'>2015</span>, <span class='fl'>2015</span><span class='op'>)</span>,</span>
+<span>  StandardDeviation <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.278</span>, <span class='fl'>0.443</span>, <span class='fl'>0.661</span>, <span class='fl'>0.398</span>, <span class='fl'>0.274</span>, <span class='fl'>0.508</span>, <span class='fl'>0.382</span>, <span class='fl'>0.512</span>, <span class='fl'>0.381</span><span class='op'>)</span></span>
+<span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>justice_data_table</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span><span class='op'>(</span>Justice <span class='op'>=</span> <span class='va'>scores</span><span class='op'>)</span></span>
+<span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='va'>justice_data_table</span><span class='op'>)</span></span></code></pre>
+</div>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 21%" />
+<col style="width: 13%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Justice.JusticeName</th>
+<th style="text-align: left;">Justice.JusticeCode</th>
+<th style="text-align: right;">Justice.MeanIdeology</th>
+<th style="text-align: right;">Justice.Year</th>
+<th style="text-align: right;">Justice.StandardDeviation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Anthony Kennedy</td>
+<td style="text-align: left;">AK</td>
+<td style="text-align: right;">1.2</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.278</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Antonin Scalia</td>
+<td style="text-align: left;">AS</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.443</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clarence Thomas</td>
+<td style="text-align: left;">CT</td>
+<td style="text-align: right;">3.1</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.661</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Elena Kagan</td>
+<td style="text-align: left;">EK</td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.398</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">John Roberts</td>
+<td style="text-align: left;">JR</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.274</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ruth Bader Ginsburg</td>
+<td style="text-align: left;">RBG</td>
+<td style="text-align: right;">-0.3</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.508</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Samuel Alito</td>
+<td style="text-align: left;">SA</td>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.382</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sonia Sotomayor</td>
+<td style="text-align: left;">SS</td>
+<td style="text-align: right;">-1.0</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.512</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Stephen Breyer</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">0.381</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

@@ -54,6 +54,8 @@ Milestone 4:
 For this milestone, I've decided to visualize these 4 variables in a tibble, including the Standard Deviation of the mean ideology I can later use this to figure out the spread of the Justices' left or right-leaning tendencies over the course of 70+ years.
 
 ```{r}
+library(data.table)
+
 scores <- data.frame(
   JusticeName = c("Anthony Kennedy", "Antonin Scalia", "Clarence Thomas", "Elena Kagan", "John Roberts", "Ruth Bader Ginsburg", "Samuel Alito", "Sonia Sotomayor", "Stephen Breyer"),
   JusticeCode = c("AK", "AS", "CT", "EK", "JR", "RBG", "SA", "SS", "SB"),
@@ -63,7 +65,7 @@ scores <- data.frame(
 )
 
 justice_data_table <- data.table(Justice = scores)
-justice_data_table
+knitr::kable(justice_data_table)
 ```
 
 
