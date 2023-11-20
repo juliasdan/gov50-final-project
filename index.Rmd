@@ -49,4 +49,21 @@ ggplot(data = filtered_scores, aes(x = ...2, y = ...4)) +
 ```
 
 
+Milestone 4:
+
+For this milestone, I've decided to visualize these 4 variables in a tibble, including the Standard Deviation of the mean ideology I can later use this to figure out the spread of the Justices' left or right-leaning tendencies over the course of 70+ years.
+
+```{r}
+scores <- data.frame(
+  JusticeName = c("Anthony Kennedy", "Antonin Scalia", "Clarence Thomas", "Elena Kagan", "John Roberts", "Ruth Bader Ginsburg", "Samuel Alito", "Sonia Sotomayor", "Stephen Breyer"),
+  JusticeCode = c("AK", "AS", "CT", "EK", "JR", "RBG", "SA", "SS", "SB"),
+  MeanIdeology = c(1.2, 2.5, 3.1, 0.8, 1.5, -0.3, 2.8, -1.0, 0.2),
+  Year = c(2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015, 2015),
+  StandardDeviation = c(0.278, 0.443, 0.661, 0.398, 0.274, 0.508, 0.382, 0.512, 0.381)
+)
+
+justice_data_table <- data.table(Justice = scores)
+justice_data_table
+```
+
 
