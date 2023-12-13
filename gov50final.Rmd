@@ -20,12 +20,14 @@ This investigation is important as it will reveal whether monetary success can v
 
 Data section
 
-The data I chose to manipulate comes from Kaggle. Specifically, I used a data set called top-500-movies which I then merged with one called Top_1000_Highest_Grossing_Movies_Of_All_Time to create a data set that included both the elements I needed to determine the production costs of various films, the worldwide gross, and Metacritic score of these films as well as data on the films themselves like their title and their duration. Now, I have data that includes everything I need to make my primary analysis regarding budgeting, gross, and reviews. I will compare everything against the Metacritic score, my independent variable. When I run my regression of the effects of production cost on critic score, a positive, significant coefficient would indicate support for my hypothesis.
+The data I chose to manipulate comes from Kaggle. Specifically, I used a data set called top-500-movies which I then merged with one called Top_1000_Highest_Grossing_Movies_Of_All_Time to create a data set that included both the elements I needed to determine the production costs of various films, the worldwide gross, and Metacritic score of these films as well as data on the films themselves like their title and their duration. The data includes films up to the year 2022. Now, I have data that includes everything I need to make my primary analysis regarding budgeting, gross, and reviews. I will compare everything against the Metacritic score, my independent variable. When I run my regression of the effects of production cost on critic score, a positive, significant coefficient would indicate support for my hypothesis.
 
-Below, the code showing the data I merged can be found.
+Below, the code showing the data I merged can be found. I also made sure to remove duplicate titles or titles that might be under different names from my merged data in order to properly clean and analyze my code.
 
 ```{r merge-data}
+# Loading library
 library(readr)
+# Reading my data
 top_500_movies <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/top-500-movies.csv")
 
 Top_1000_Highest_Grossing_Movies_Of_All_Time <-read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/Top_1000_Highest_Grossing_Movies_Of_All_Time.csv")
@@ -34,10 +36,10 @@ movie_data <- ("~/Desktop/Gov 50 Final Project/index_files/sources/Data/movie_da
 
 View(top_500_movies)
 
-## Merged data between top-500-movies and top-1000-highest-grossing-movies-of-all-time in order to get a dataset that includes all elements I will be examining
+## Merging data between top-500-movies and top-1000-highest-grossing-movies-of-all-time in order to get a data set that includes all elements I will be examining
 merged_data <- merge(top_500_movies, Top_1000_Highest_Grossing_Movies_Of_All_Time, by.x = "title", by.y = "Movie Title")
 
-## Remove duplicate titles
+# Removing duplicate titles
 library(readr)
 library(dplyr)
 gov50movies <- merged_data |>
@@ -48,22 +50,22 @@ After merging my data, I decided to plot the relationship between production cos
 
 
 ```{r scatterplot-production-cost-vs-metascore}
-## Plotting production cost vs movie rating
-
+# Plotting production cost vs movie rating
+# Loading my libraries
 library(readr)
 library(ggplot2)
 
-# Read the dataset
+# Reading the data
 gov50_movies <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv")
 
-## as.numeric
+# as.numeric
 gov50_movies$production_cost <- as.numeric(gov50_movies$production_cost)
 gov50_movies$Metascore <- as.numeric(gov50_movies$Metascore)
 
-# Adjust production cost to be in tens of millions
+# Adjusting production cost to be in tens of millions
 gov50_movies$production_cost <- gov50_movies$production_cost / 10000000
 
-# Create the scatter plot 
+# Creating the scatterplot 
 ggplot(gov50_movies, aes(x = production_cost, y = Metascore)) +
     geom_point(color = "lightblue") +
     theme_classic() +
@@ -83,6 +85,7 @@ First, however, I wanted to see whether there could possibly be another coeffici
 I chose here to observe via a histogram the preliminary visualization of number of films and their worldwide gross. Based on my results, I found that my data was heavily right-skewed and needed to be calibrated.
 
 ```{r histogram-skewed}
+# Creating my histogram
 hist(gov50movies$worldwide_gross, 
      main = "Histogram of Worldwide Gross of Films", 
      xlab = "Worldwide Gross of Films", 
@@ -93,74 +96,64 @@ hist(gov50movies$worldwide_gross,
 To remedy my skewed data and create an output of meaningful results, I decided to use the log function on my worldwide_gross column. The resulting model summary table shows that, compared to the production cost, the worldwide gross is far more statistically significant. The positive value of 11.912 obtained also indicates a positive slope meaning that there is a strong correlation between a movie that does well at the box office and a high Metascore. It also represents the estimated change of worldwide gross as it relates to incremental changes in budget. Moreover, since the stars indicate that p < 0.001, it is suggested that the null hypothesis will be rejected since worldwide gross is associated with a significant effect on the dependent variable (Metascore).
 
 ```{r using-log}
-## Because my data is too skewed, I will use log
+## Because my data is too skewed, I am calibrating using log
 model <- lm(Metascore ~ log(worldwide_gross), data = gov50movies)
 
 model2 <- lm(Metascore ~ log(worldwide_gross) + production_cost, data = gov50movies)
+
+# Making sure my data table looks presentable
 modelsummary::modelsummary(list(model, model2), stars = TRUE)
 ```
 
-Next, I created a plot of the significant correlation I found to visually analyze my results. Though statistically significant, I cannot argue that the relationship observed is causal as this is still just an observational analysis. My two graphs below visually demonstrate how worldwide gross affects metascore in a positive way while the effect of production cost on the same outcome variable is largely constant.
+Next, I created a plot of the significant correlation I found to visually analyze my results. Though statistically significant, I cannot argue that the relationship observed is causal as this is still just an observational analysis. My two graphs below visually demonstrate how worldwide gross affects metascore in a positive way while the effect of production cost on the same outcome variable is largely constant. I can also observe from the regression line that the plot that includes worlwide gross has a steeper angle than the one that includes production cost. In my graphs below, I chose to calibrate the x-axis to include a range of logarithmically-adjusted values from 18-22 so that my data was on an equal scale for both graphs and not only centered around the mean.
 
 ```{r scatterplot-meta-worldwide-production}
+# Creating two graphs side-by-side
 par(mfrow = c(1, 2))
 
+# Plotting my first graph
 plot(log(gov50movies$worldwide_gross), gov50movies$Metascore, 
      main = "Scatterplot of \n Metascore vs Worldwide Gross", 
      xlab = "Worldwide Gross",
      ylab = "Metascore",
      xlim = c(18, 22),
      col = "blue")
-
 abline(lm(gov50movies$Metascore ~ log(gov50movies$worldwide_gross)), col = "red")
 
-mean_worldwide_gross <- mean(gov50movies$worldwide_gross)
-sd_worldwide_gross <- sd(gov50movies$worldwide_gross)
-
-# Create a sequence of x values for the normal distribution curve
-x_values <- seq(18, 22, length = 100)
-
-# Calculate the corresponding y values for the normal distribution curve
-y_values <- dnorm(x_values, mean = mean_worldwide_gross, sd = sd_worldwide_gross)
-
-# Add the normal distribution curve to the plot
-lines(x_values, y_values, col = "red", lty = 2)
-
+# Plotting my second graph
 plot(log(gov50movies$production_cost), gov50movies$Metascore, 
      main = "Scatterplot of \n Metascore vs Production Cost", 
      xlab = "Production Cost",
      ylab = "Metascore",
      xlim = c(18, 22),
      col = "blue")
-
 abline(lm(gov50movies$Metascore ~ log(gov50movies$production_cost)), col = "red")
 ```
 
 Finally, I was curious to see if Metacritic reviews aligned with judgements made by the committee of the Academy Awards. I did this in order to evaluate how fickle critic reviews can be. My results show that only about 30.4% of highest rated (Metacritic score of over 85) that were also nominated for Oscars won an Oscar. 
 
 ```{r reading-data}
-## How many of the highest grossing movies have won Oscars?
+# How many of the highest grossing movies have won Oscars?
 
-# Load the required library
+# Loading the libraries
 library(readr)
 library(dplyr)
 
-# Read the datasets
+# Reading the data
 gov50_movies <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv")
 oscar_awards <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/the_oscar_award.csv")
 
-# Merge the datasets on the movie title
-# Replace 'movie_title_column' with the actual column names if they are different
+# Merging the data on the movie title
 oscar_gov <- merge(gov50movies, oscar_awards, by.x = "title", by.y = "film")
 ```
 
 ```{r percentage-oscar-winners}
-## Selecting only specific columns for Oscars
+# Creating a threshold for the Metacritic score
 threshold <- 85
 
 percentage_true <- mean(oscar_gov$winner == TRUE) * 100
 
-# Print the result
+# Printing the results
 cat("Percentage of TRUE outcomes:", percentage_true, "%\n")
 ```
 
