@@ -1794,11 +1794,13 @@ RMSE
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>worldwide_gross</span><span class='op'>)</span>, <span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>Metascore</span>, </span>
-<span>     main <span class='op'>=</span> <span class='st'>"Scatterplot of Metascore vs Worldwide Gross"</span>, </span>
+<span>     main <span class='op'>=</span> <span class='st'>"Scatterplot of \n Metascore vs Worldwide Gross"</span>, </span>
 <span>     xlab <span class='op'>=</span> <span class='st'>"Worldwide Gross"</span>,</span>
 <span>     ylab <span class='op'>=</span> <span class='st'>"Metascore"</span>,</span>
 <span>     xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>18</span>, <span class='fl'>22</span><span class='op'>)</span>,</span>
 <span>     col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>Metascore</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>worldwide_gross</span><span class='op'>)</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>mean_worldwide_gross</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>worldwide_gross</span><span class='op'>)</span></span>
 <span><span class='va'>sd_worldwide_gross</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>worldwide_gross</span><span class='op'>)</span></span>
@@ -1813,11 +1815,13 @@ RMSE
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>x_values</span>, <span class='va'>y_values</span>, col <span class='op'>=</span> <span class='st'>"red"</span>, lty <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>production_cost</span><span class='op'>)</span>, <span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>Metascore</span>, </span>
-<span>     main <span class='op'>=</span> <span class='st'>"Scatterplot of Metascore vs Production Cost"</span>, </span>
+<span>     main <span class='op'>=</span> <span class='st'>"Scatterplot of \n Metascore vs Production Cost"</span>, </span>
 <span>     xlab <span class='op'>=</span> <span class='st'>"Production Cost"</span>,</span>
 <span>     ylab <span class='op'>=</span> <span class='st'>"Metascore"</span>,</span>
 <span>     xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>18</span>, <span class='fl'>22</span><span class='op'>)</span>,</span>
-<span>     col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span></span></code></pre>
+<span>     col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>Metascore</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>production_cost</span><span class='op'>)</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span></span></code></pre>
 </div>
 <p><img src="gov50final_files/figure-html5/scatterplot-meta-worldwide-production-1.png" width="624" /></p>
 </div>
