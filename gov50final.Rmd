@@ -11,42 +11,205 @@ output:
 
 ## Project thoughts
 
-For my final project in Gov 50, I'd like to investigate data relating to the rate at which immigrants within the United States move back to their home country. I'd like to see whether there is a trend among immigrants from a certain world region returning to their country of origin as well as the ages at which an individual is more likely to return. Ultimately, I am interested in this field of inquiry because of my own familial background and trends I see among people of my community. I hope to run into incongruences in my data, and figure out how/why these come about. I hope to gather my data from the Migration Policy Institute (and various similar websites), and narrow down my data by year and region of the world (I might focus on Europe and other regions of high immigration). Through my analysis, I hope to at least see spikes in the volume of immigration to the United States by year in order to support my hypothesis that, while there is an overall increase in immigration since X year, there is also an increase of ex-patriots returning home. 
+Introduction
+
+Movies are the way of the future. With hundreds of movies being released in the United States per year alone, studios must compete to win the attention of viewers. In more recent years, companies such as Netflix, Amazon Prime, and HBO Max have been employing statistics and data analytics to measure the success of their films, collecting data to determine audience preference. The film industry itself is huge, generating billions of dollars in revenue and attracting audiences worldwide. From a young age, I have always been interested in films, from wanting to be an actor to making my own original work. My personal experience with film has led me to realize that there is much more work that goes into making a great movie than meets the eye. A great movie requires top-notch actors, a brilliant story, and a dedicated production team. However, movies are also subjected to the ever-changing will of the general public. My goal with this project is to answer the research question: by what factors is a successful film defined? I hypothesize that the films with the highest prodution cost will have the highest Metacritic score, since the bigger the film's budget, the more likely it is to get a popular score from "the world's best critics". I also predict that a higher production cost will yield better critic reviews since production studios had more funds to get the best talent, crew, and promotional team in order to make the movie a success.
+
+This investigation is important as it will reveal whether monetary success can viably correlate to the way critics perceive a film. This is significant because, though it is an observational study and thus no causation can be immediately determined, I believe that it could help to better understand the dynamics of Hollywood and reflect what we as a society value in the media we consume.
 
 
-Milestone 2: Finding data and writing a proposal (due 10/13)
-Proposal:
-To what extent is immigration judge ideology correlated to the rate at which asylum is granted? In this study, I plan to answer this question, examining the relationship between different immigration judges’ characteristics (namely ideology and the party to which Congress belongs) influences the influx of immigrants into the United States. I hypothesize that a more democratic congress and liberal ideology score will result in higher immigration. I also plan to take in gender as well as English-speaking/non-English speaking status as a possible influence, should I find little correlation solely on ideology. These other variables do indicate a certain bias that could be connected with judge implicit ideology and decision-making. My sample is comprised of continuous counters of months elapsed starting with January 1990 as 1 and running through December 2010 as 252 based on the date the applicant’s case was decided. My explanatory variable of interest is ideology, and is based on the individual-level asylum_liberalism score; which ranges from 0.95 to 1.39 where higher scores indicating a greater proclivity to grant an applicant asylum. My outcome variable of interest is Ij_total_grants_relief: total grants of relief (including asylum and either type of withholding) by IJs in a given month. The observable pattern in my data that would prove my hypothesis is higher ideology scores correlate to higher total grants for relief. If this correlation is not seen, or even if a correlation between a Democratic Congress and more asylum acceptance is not seen, this would disprove my hypothesis completely.
+Data section
 
+The data I chose to manipulate comes from Kaggle. Specifically, I used a data set called top-500-movies which I then merged with one called Top_1000_Highest_Grossing_Movies_Of_All_Time to create a data set that included both the elements I needed to determine the production costs of various films, the worldwide gross, and Metacritic score of these films as well as data on the films themselves like their title and their duration. Now, I have data that includes everything I need to make my primary analysis regarding budgeting, gross, and reviews. I will compare everything against the Metacritic score, my independent variable. When I run my regression of the effects of production cost on critic score, a positive, significant coefficient would indicate support for my hypothesis.
 
-Milestone 3:
-A few things were re-worked in this iteration of my final project. For one, I am using a different data set that shows Supreme Court Justices and their ideology (according to Martin-Quinn judicial ideology scores) from 1937-2015. In this visualization, I tried to show the ideology of justices only from 2015. My data source can be found here: http://scdb.wustl.edu/documentation.php?var=issueArea and here: https://www.kaggle.com/datasets/umichigan/court-justices/.
+Below, the code showing the data I merged can be found.
+
+```{r merge-data}
+library(readr)
+top_500_movies <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/top-500-movies.csv")
+
+Top_1000_Highest_Grossing_Movies_Of_All_Time <-read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/Top_1000_Highest_Grossing_Movies_Of_All_Time.csv")
+
+movie_data <- ("~/Desktop/Gov 50 Final Project/index_files/sources/Data/movie_data.csv")
+
+View(top_500_movies)
+
+## Merged data between top-500-movies and top-1000-highest-grossing-movies-of-all-time in order to get a dataset that includes all elements I will be examining
+merged_data <- merge(top_500_movies, Top_1000_Highest_Grossing_Movies_Of_All_Time, by.x = "title", by.y = "Movie Title")
+
+## Remove duplicate titles
+library(readr)
+library(dplyr)
+gov50movies <- merged_data |>
+  distinct(title, .keep_all = TRUE)
+```
+
+After merging my data, I decided to plot the relationship between production cost and Metascore, drawing a regression line in the midst of the scatterplot. Based on the graph below, I can see a minor positive correlation between these two variables, meaning that, as production cost increases, Metascore also increases slightly. Upon seeing these results, however, I was a bit less sure about the strength of this correlation, and decided to venture further into the analysis to figure out whether a correlation actually existed between production cost and  Metacritic score. To do this, I needed to run a regression and figure out what exactly are the significant coeficients within my data, and if production cost is really one of them.
 
 ```{r}
-library(readxl)
-scores <- read_excel("~/Desktop/scores.xlsx")
+library(readr)
+movie_data <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/movie_data.csv")
+View(movie_data)
+```
+
+```{r}
+write.csv(gov50movies, "~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv", row.names = FALSE)
+```
+
+```{r scatterplot-production-cost-vs-metascore}
+## Plotting production cost vs movie rating
+
+library(readr)
+library(ggplot2)
+
+# Read the dataset
+gov50_movies <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv")
+
+## as.numeric
+gov50_movies$production_cost <- as.numeric(gov50_movies$production_cost)
+gov50_movies$Metascore <- as.numeric(gov50_movies$Metascore)
+
+# Adjust production cost to be in tens of millions
+gov50_movies$production_cost <- gov50_movies$production_cost / 10000000
+
+# Create the scatter plot 
+ggplot(gov50_movies, aes(x = Metascore, y = production_cost)) +
+    geom_point(color = "lightblue") +
+    theme_classic() +
+    labs(title = "Movie Rating vs Production Cost",
+         x = "Metascore",
+         y = "Production Cost") + geom_smooth(method = "lm", se = FALSE) +
+  geom_rug() +
+  theme_grey()
+```
+
+Results section
+
+As it turns out, my coefficient of interest was not statistically significant.
+
+
+
+## visualization of skewed
+
+
+```{r}
+## since data is skewed, too low, we use log
+model <- lm(Metascore ~ log(worldwide_gross), data = gov50movies)
+
+model2 <- lm(Metascore ~ log(worldwide_gross) + production_cost, data = gov50movies)
+modelsummary::modelsummary(list(model, model2), stars = TRUE)
+
+summary(model)
+
+plot(gov50movies$Metascore, gov50movies$production_cost)
+```
+null hypothesis = smth...
+
+worlwide = indepvariable
+production = control variable
+
+Mention: observational data, cannot argue causal relationship. to improve model, using first main variable then other variable for confounding variables. 
+
+```{r}
+hist(gov50movies$worldwide_gross, 
+     main = "Histogram of Worldwide Gross of Films", 
+     xlab = "Worldwide Gross of Films", 
+     ylab = "Number of Films", 
+     col = c("red", "orange", "yellow", "green", "purple", "magenta"))
 ```
 
 ```{r}
 library(ggplot2)
-library(tidyverse)
+model3 <- lm(Metascore ~ log(worldwide_gross) + Duration, data = gov50movies)
+plot(gov50movies$Metascore, gov50movies$Duration, main = "Scatterplot",
+     xlab = "Metascore", ylab = "Duration")
 ```
 
 ```{r}
-justices_2015 <- c("Anthony Kennedy", "Antonin Scalia", "Clarence Thomas", "Elena Kagan", "John Roberts", "Ruth Bader Ginsburg", "Samuel Alito", "Sonia Sotomayor", "Stephen Breyer")
+library(readr)
+library(ggplot2)
+
+# Read the dataset
+gov50_movies <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv")
+
+# Convert 'gross' to numeric if it's not already
+##remove currency??
+gov50_movies$worldwide_gross <- as.numeric(gov50_movies$worldwide_gross)
+
+# Scale gross to be in tens of millions
+gov50_movies$gross <- gov50_movies$worldwide_gross / 10000000
+
+# Create the scatter plot with a line of best fit
+ggplot(gov50_movies, aes(x = year, y = worldwide_gross)) +
+    geom_point() +
+    geom_smooth(method = "lm", color = "blue") + # Adds a linear regression line
+    theme_minimal() +
+    labs(title = "Year Released vs Gross (in Tens of Millions)",
+         x = "Year Released",
+         y = "Worldwide Gross (Tens of Millions)")
 ```
 
 ```{r}
-filtered_scores <- scores |>
-  filter(scores == 2015)
+## How many of the higest grossing movies have won Oscars?
+
+library(readr)
+the_oscar_award <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/the_oscar_award.csv")
+View(the_oscar_award)
+
+# Load the required library
+library(readr)
+library(dplyr)
+
+# Read the datasets
+gov50_movies <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv")
+oscar_awards <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/the_oscar_award.csv")
+
+# Merge the datasets on the movie title
+# Replace 'movie_title_column' with the actual column names if they are different
+oscar_gov <- merge(gov50movies, oscar_awards, by.x = "title", by.y = "film")
+
+## Selecting only specific columns for Oscars
+oscar_gov |> 
+  select(winner, category, Metascore, title)
+
+## filter by winners only
+
+oscar_gov |> filter(winner == TRUE)
+
+## Now figure out what percentage of overall highest-grossing films are Oscar-winners
+
+threshold <- 85
+
+# Filter to get highest-rated films
+highest_rated_films <- filter(oscar_gov, Metascore > threshold)
+
+# Count the total number of highest-rated films
+total_highest_rated <- nrow(highest_rated_films)
+
+# Count the number of Oscar winners among the highest-rated films
+oscar_winners_highest_rated <- sum(highest_rated_films$winner == TRUE)
+
+# Calculate the percentage of highest-rated films that are Oscar winners
+percentage_oscar_winners <- (oscar_winners_highest_rated / total_highest_rated) * 100
+
+# Print the result
+print(paste("Percentage of highest-rated films that are Oscar winners: ", percentage_oscar_winners, "%", sep = ""))
+
 ```
 
 ```{r}
-ggplot(data = filtered_scores, aes(x = ...2, y = ...4)) +
-  geom_point() +
-  labs(x = "Justice Code", y = "Mean Ideology") +
-  ggtitle("Scatter Plot of Justice Name vs. Mean Ideology")
+## merging data, oscars and gov50movies with left-join instead of merge --> THIS WORKS!
+
+# Read the datasets
+gov50_movies <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv")
+oscar_awards <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/the_oscar_award.csv")
+
+# Rename for consistency
+gov50_movies <- gov50_movies |> rename("Movie Title" = title)
+oscar_awards <- oscar_awards |> rename("Movie Title" = film)
+
+# Left join
+merged_data <- gov50_movies |> 
+  left_join(oscar_awards, by = "Movie Title") |>
+  select(winner, category, Metascore, "Movie Title")
 ```
-
-
-
