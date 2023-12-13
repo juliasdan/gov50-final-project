@@ -1573,19 +1573,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/distinct.html'>distinct</a></span><span class='op'>(</span><span class='va'>title</span>, .keep_all <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>After merging my data, I decided to plot the relationship between production cost and Metascore, drawing a regression line in the midst of the scatterplot. Based on the graph below, I can see a minor positive correlation between these two variables, meaning that, as production cost increases, Metascore also increases slightly. Upon seeing these results, however, I was a bit less sure about the strength of this correlation, and decided to venture further into the analysis to figure out whether a correlation actually existed between production cost and Metacritic score. To do this, I needed to run a regression and figure out what exactly are the significant coeficients within my data, and if production cost is really one of them.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span></span>
-<span><span class='va'>movie_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"~/Desktop/Gov 50 Final Project/index_files/sources/Data/movie_data.csv"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='va'>movie_data</span><span class='op'>)</span></span></code></pre>
-</div>
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/utils/write.table.html'>write.csv</a></span><span class='op'>(</span><span class='va'>gov50movies</span>, <span class='st'>"~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv"</span>, row.names <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
-</div>
-</div>
+<p>After merging my data, I decided to plot the relationship between production cost and Metascore, drawing a regression line in the midst of the scatterplot. Based on the graph below, I can see a minor positive correlation between these two variables, meaning that, as production cost increases, Metascore also increases slightly. Upon seeing these results, however, I was a bit less sure about the strength of this correlation, and decided to venture further into the analysis to figure out whether a correlation actually existed between production cost and Metacritic score. To do this, I needed to run a regression and figure out what exactly are the significant coefficients within my data, and if production cost is really one of them.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Plotting production cost vs movie rating</span></span>
@@ -1800,7 +1788,7 @@ RMSE
 </tfoot>
 </table>
 </div>
-<p>Next, I created a plot of the significant correlation I found to visually analyze my results. Though statistically significant, I cannot argue that the relationship observed is causal as this is still just an observational analysis. In my data, I am encountering the problem of counterfactuals as I am only using a data set that includes the top 1000 highest grossing films of all time. As such, I don’t have the data to compare how films that didn’t do exceptionally well at the box-office succeeded in the critics’ point of view. This constitutes a potential confounding bias for my data. Moreover, there could certainly be other confounding variable which effect the outcome of my results. Perhaps critics are more likely to praise well-liked films regardless of budget or box-office success. Alternatively, well known actors and directors are often able to bring in millions of dollars, especially within a franchise. Perhaps critics are also likely to rate a movie highly if they like the work of these well-known figures. Alternatively, since I observed a strong correlation between gross and critic reviews, I wonder if the Metascore affects the worldwide gross and if so, to what extent? While I do not have the data, specifically temporal data, to draw any conclusions on this end, I find it an interesting investigation for future analyses.</p>
+<p>Next, I created a plot of the significant correlation I found to visually analyze my results. Though statistically significant, I cannot argue that the relationship observed is causal as this is still just an observational analysis. My two graphs below visually demonstrate how worldwide gross affects metascore in a positive way while the effect of production cost on the same outcome variable is largely constant.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
@@ -1833,48 +1821,7 @@ RMSE
 </div>
 <p><img src="gov50final_files/figure-html5/scatterplot-meta-worldwide-production-1.png" width="624" /></p>
 </div>
-<p>null hypothesis = smth…</p>
-<p>worlwide = indepvariable
-production = control variable</p>
-<p>Mention: observational data, cannot argue causal relationship. to improve model, using first main variable then other variable for confounding variables.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
-<span><span class='va'>model3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Metascore</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>worldwide_gross</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>Duration</span>, data <span class='op'>=</span> <span class='va'>gov50movies</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>Metascore</span>, <span class='va'>gov50movies</span><span class='op'>$</span><span class='va'>Duration</span>, </span>
-<span>     main <span class='op'>=</span> <span class='st'>"Scatterplot Depicting the Influence of Duration on Metascore"</span>,</span>
-<span>     xlab <span class='op'>=</span> <span class='st'>"Metascore"</span>, </span>
-<span>     ylab <span class='op'>=</span> <span class='st'>"Duration of Film"</span>,</span>
-<span>     col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span></span></code></pre>
-</div>
-<p><img src="gov50final_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'># Read the dataset</span></span>
-<span><span class='va'>gov50_movies</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv"</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'># Convert 'gross' to numeric if it's not already</span></span>
-<span><span class='co'>##remove currency??</span></span>
-<span><span class='va'>gov50_movies</span><span class='op'>$</span><span class='va'>worldwide_gross</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>gov50_movies</span><span class='op'>$</span><span class='va'>worldwide_gross</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'># Scale gross to be in tens of millions</span></span>
-<span><span class='va'>gov50_movies</span><span class='op'>$</span><span class='va'>gross</span> <span class='op'>&lt;-</span> <span class='va'>gov50_movies</span><span class='op'>$</span><span class='va'>worldwide_gross</span> <span class='op'>/</span> <span class='fl'>10000000</span></span>
-<span></span>
-<span><span class='co'># Create the scatter plot with a line of best fit</span></span>
-<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>gov50_movies</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>worldwide_gross</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, color <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span> <span class='op'>+</span> <span class='co'># Adds a linear regression line</span></span>
-<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Year Released vs Gross (in Tens of Millions)"</span>,</span>
-<span>         x <span class='op'>=</span> <span class='st'>"Year Released"</span>,</span>
-<span>         y <span class='op'>=</span> <span class='st'>"Worldwide Gross (Tens of Millions)"</span><span class='op'>)</span></span></code></pre>
-</div>
-<p><img src="gov50final_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
-</div>
+<p>Finally, I was curious to see if Metacritic reviews aligned with judgements made by the committee of the Academy Awards. I did this in order to evaluate how fickle critic reviews can be. My results show that only about 30.4% of highest rated (Metacritic score of over 85) that were also nominated for Oscars won an Oscar.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## How many of the highest grossing movies have won Oscars?</span></span>
@@ -1904,6 +1851,8 @@ production = control variable</p>
 </div>
 <pre><code>Percentage of TRUE outcomes: 30.43478 %</code></pre>
 </div>
+<p>Conclusion section</p>
+<p>My results show that, while there is no correlation between elevated production cost and elevated Metascores, there is a positive correlation between worldwide gross and Metascores. This effectively disproves my original hypothesis, as production cost is not significant, but I am equally pleased to find a result to the contrary. Finding a strong regression for wordwide gross is still interesting in evaluating the role of films in our day to day life, and perhaps comments on the fact that we tend to value things in a film that are not tied to budget. As mentioned, I cannot draw any concrete conclusions about causality from the data I analyzed. In my data, I am encountering the problem of counterfactuals as I am only using a data set that includes the top 1000 highest grossing films of all time. As such, I don’t have the data to compare how films that didn’t do exceptionally well at the box-office succeeded in the critics’ point of view. This constitutes a potential confounding bias for my data. Moreover, there could certainly be other confounding variable which effect the outcome of my results. Perhaps critics are more likely to praise well-liked films regardless of budget or box-office success. Alternatively, well known actors and directors are often able to bring in millions of dollars, especially within a franchise. Perhaps critics are also likely to rate a movie highly if they like the work of these well-known figures. Alternatively, since I observed a strong correlation between gross and critic reviews, I wonder if the Metascore affects the worldwide gross and if so, to what extent? While I do not have the data, specifically temporal data, to draw any conclusions on this end, I find it an interesting investigation for future analyses. My model could certainly be improved if I had more time to measure confounding variables to attain a more precise conclusion about the actual reasons for which Metascores increase or decrease. Moreover, my results about Oscar winners - that only 30.4% of highest-rated movies are awarded Oscars - also indicates that there is more to film success than demonstrated in this analysis.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

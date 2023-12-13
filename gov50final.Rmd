@@ -44,17 +44,8 @@ gov50movies <- merged_data |>
   distinct(title, .keep_all = TRUE)
 ```
 
-After merging my data, I decided to plot the relationship between production cost and Metascore, drawing a regression line in the midst of the scatterplot. Based on the graph below, I can see a minor positive correlation between these two variables, meaning that, as production cost increases, Metascore also increases slightly. Upon seeing these results, however, I was a bit less sure about the strength of this correlation, and decided to venture further into the analysis to figure out whether a correlation actually existed between production cost and  Metacritic score. To do this, I needed to run a regression and figure out what exactly are the significant coeficients within my data, and if production cost is really one of them.
+After merging my data, I decided to plot the relationship between production cost and Metascore, drawing a regression line in the midst of the scatterplot. Based on the graph below, I can see a minor positive correlation between these two variables, meaning that, as production cost increases, Metascore also increases slightly. Upon seeing these results, however, I was a bit less sure about the strength of this correlation, and decided to venture further into the analysis to figure out whether a correlation actually existed between production cost and  Metacritic score. To do this, I needed to run a regression and figure out what exactly are the significant coefficients within my data, and if production cost is really one of them.
 
-```{r}
-library(readr)
-movie_data <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/movie_data.csv")
-View(movie_data)
-```
-
-```{r}
-write.csv(gov50movies, "~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv", row.names = FALSE)
-```
 
 ```{r scatterplot-production-cost-vs-metascore}
 ## Plotting production cost vs movie rating
@@ -109,17 +100,19 @@ model2 <- lm(Metascore ~ log(worldwide_gross) + production_cost, data = gov50mov
 modelsummary::modelsummary(list(model, model2), stars = TRUE)
 ```
 
-Next, I created a plot of the significant correlation I found to visually analyze my results. Though statistically significant, I cannot argue that the relationship observed is causal as this is still just an observational analysis. In my data, I am encountering the problem of counterfactuals as I am only using a data set that includes the top 1000 highest grossing films of all time. As such, I don't have the data to compare how films that didn't do exceptionally well at the box-office succeeded in the critics' point of view. This constitutes a potential confounding bias for my data. Moreover, there could certainly be other confounding variable which effect the outcome of my results. Perhaps critics are more likely to praise well-liked films regardless of budget or box-office success. Alternatively, well known actors and directors are often able to bring in millions of dollars, especially within a franchise. Perhaps critics are also likely to rate a movie highly if they like the work of these well-known figures. Alternatively, since I observed a strong correlation between gross and critic reviews, I wonder if the Metascore affects the worldwide gross and if so, to what extent? While I do not have the data, specifically temporal data, to draw any conclusions on this end, I find it an interesting investigation for future analyses.
+Next, I created a plot of the significant correlation I found to visually analyze my results. Though statistically significant, I cannot argue that the relationship observed is causal as this is still just an observational analysis. My two graphs below visually demonstrate how worldwide gross affects metascore in a positive way while the effect of production cost on the same outcome variable is largely constant.
 
 ```{r scatterplot-meta-worldwide-production}
 par(mfrow = c(1, 2))
 
 plot(log(gov50movies$worldwide_gross), gov50movies$Metascore, 
-     main = "Scatterplot of Metascore vs Worldwide Gross", 
+     main = "Scatterplot of \n Metascore vs Worldwide Gross", 
      xlab = "Worldwide Gross",
      ylab = "Metascore",
      xlim = c(18, 22),
      col = "blue")
+
+abline(lm(gov50movies$Metascore ~ log(gov50movies$worldwide_gross)), col = "red")
 
 mean_worldwide_gross <- mean(gov50movies$worldwide_gross)
 sd_worldwide_gross <- sd(gov50movies$worldwide_gross)
@@ -134,58 +127,18 @@ y_values <- dnorm(x_values, mean = mean_worldwide_gross, sd = sd_worldwide_gross
 lines(x_values, y_values, col = "red", lty = 2)
 
 plot(log(gov50movies$production_cost), gov50movies$Metascore, 
-     main = "Scatterplot of Metascore vs Production Cost", 
+     main = "Scatterplot of \n Metascore vs Production Cost", 
      xlab = "Production Cost",
      ylab = "Metascore",
      xlim = c(18, 22),
      col = "blue")
+
+abline(lm(gov50movies$Metascore ~ log(gov50movies$production_cost)), col = "red")
 ```
 
+Finally, I was curious to see if Metacritic reviews aligned with judgements made by the committee of the Academy Awards. I did this in order to evaluate how fickle critic reviews can be. My results show that only about 30.4% of highest rated (Metacritic score of over 85) that were also nominated for Oscars won an Oscar. 
 
-null hypothesis = smth...
-
-worlwide = indepvariable
-production = control variable
-
-Mention: observational data, cannot argue causal relationship. to improve model, using first main variable then other variable for confounding variables. 
-
-
-
-```{r}
-library(ggplot2)
-model3 <- lm(Metascore ~ log(worldwide_gross) + Duration, data = gov50movies)
-plot(gov50movies$Metascore, gov50movies$Duration, 
-     main = "Scatterplot Depicting the Influence of Duration on Metascore",
-     xlab = "Metascore", 
-     ylab = "Duration of Film",
-     col = "red")
-```
-
-```{r}
-library(readr)
-library(ggplot2)
-
-# Read the dataset
-gov50_movies <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Data/gov50movies.csv")
-
-# Convert 'gross' to numeric if it's not already
-##remove currency??
-gov50_movies$worldwide_gross <- as.numeric(gov50_movies$worldwide_gross)
-
-# Scale gross to be in tens of millions
-gov50_movies$gross <- gov50_movies$worldwide_gross / 10000000
-
-# Create the scatter plot with a line of best fit
-ggplot(gov50_movies, aes(x = year, y = worldwide_gross)) +
-    geom_point() +
-    geom_smooth(method = "lm", color = "blue") + # Adds a linear regression line
-    theme_minimal() +
-    labs(title = "Year Released vs Gross (in Tens of Millions)",
-         x = "Year Released",
-         y = "Worldwide Gross (Tens of Millions)")
-```
-
-```{r}
+```{r reading-data}
 ## How many of the highest grossing movies have won Oscars?
 
 # Load the required library
@@ -201,7 +154,7 @@ oscar_awards <- read_csv("~/Desktop/Gov 50 Final Project/index_files/sources/Dat
 oscar_gov <- merge(gov50movies, oscar_awards, by.x = "title", by.y = "film")
 ```
 
-```{r}
+```{r percentage-oscar-winners}
 ## Selecting only specific columns for Oscars
 threshold <- 85
 
@@ -210,3 +163,8 @@ percentage_true <- mean(oscar_gov$winner == TRUE) * 100
 # Print the result
 cat("Percentage of TRUE outcomes:", percentage_true, "%\n")
 ```
+
+
+Conclusion section
+
+My results show that, while there is no correlation between elevated production cost and elevated Metascores, there is a positive correlation between worldwide gross and Metascores. This effectively disproves my original hypothesis, as production cost is not significant, but I am equally pleased to find a result to the contrary. Finding a strong regression for wordwide gross is still interesting in evaluating the role of films in our day to day life, and perhaps comments on the fact that we tend to value things in a film that are not tied to budget. As mentioned, I cannot draw any concrete conclusions about causality from the data I analyzed. In my data, I am encountering the problem of counterfactuals as I am only using a data set that includes the top 1000 highest grossing films of all time. As such, I don't have the data to compare how films that didn't do exceptionally well at the box-office succeeded in the critics' point of view. This constitutes a potential confounding bias for my data. Moreover, there could certainly be other confounding variable which effect the outcome of my results. Perhaps critics are more likely to praise well-liked films regardless of budget or box-office success. Alternatively, well known actors and directors are often able to bring in millions of dollars, especially within a franchise. Perhaps critics are also likely to rate a movie highly if they like the work of these well-known figures. Alternatively, since I observed a strong correlation between gross and critic reviews, I wonder if the Metascore affects the worldwide gross and if so, to what extent? While I do not have the data, specifically temporal data, to draw any conclusions on this end, I find it an interesting investigation for future analyses. My model could certainly be improved if I had more time to measure confounding variables to attain a more precise conclusion about the actual reasons for which Metascores increase or decrease. Moreover, my results about Oscar winners - that only 30.4% of highest-rated movies are awarded Oscars - also indicates that there is more to film success than demonstrated in this analysis.
