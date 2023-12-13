@@ -85,14 +85,24 @@ ggplot(gov50_movies, aes(x = Metascore, y = production_cost)) +
 
 Results section
 
-As it turns out, my coefficient of interest was not statistically significant.
+As it turns out by my visualization below, my coefficient of interest was not statistically significant. I know this because I assigned a star value (from * being the least significant to *** being the most significant). This was done based on the assigned p-values from highest to lowest threshold. The p-value itself signifies the probability that, when a null hypothesis is true, the statistical significance will be either equal to or more inaccurate to the actual observed results.
 
+First, however, I wanted to see whether there could possibly be another coefficient I could observe to draw conclusions from my analysis. I decided that worldwide gross revenue would be a good observable outcome that could yeild significant results. My rationale was that, the more money a production company yeilds from a film (aka their box-office success) represents the amount of people who have gone to see it. As such, popularity could correlate to a good critic score. Nonetheless, I was still doubtful that any result would be found from this specific analysis, since popular films that appeal to the general public do not always appeal to a critical eye. 
 
+I chose here to observe via a histogram the preliminary visualization of number of films and their worldwide gross. Based on my results, I found that my data was heavily right-skewed and needed to be calibrated.
 
 ## visualization of skewed
+```{r histogram-skewed}
+hist(gov50movies$worldwide_gross, 
+     main = "Histogram of Worldwide Gross of Films", 
+     xlab = "Worldwide Gross of Films", 
+     ylab = "Number of Films", 
+     col = c("red", "orange", "yellow", "green", "purple", "magenta"))
+```
 
+To remedy my skewed data and create an output of meaningful results, 
 
-```{r}
+```{r using-log}
 ## since data is skewed, too low, we use log
 model <- lm(Metascore ~ log(worldwide_gross), data = gov50movies)
 
@@ -101,7 +111,7 @@ modelsummary::modelsummary(list(model, model2), stars = TRUE)
 
 summary(model)
 
-plot(gov50movies$Metascore, gov50movies$production_cost)
+plot(gov50movies$Metascore, gov50movies$production_cost, main = "Scatterplot of Metascore vs Production Cost (log-transformed)")
 ```
 null hypothesis = smth...
 
@@ -110,13 +120,7 @@ production = control variable
 
 Mention: observational data, cannot argue causal relationship. to improve model, using first main variable then other variable for confounding variables. 
 
-```{r}
-hist(gov50movies$worldwide_gross, 
-     main = "Histogram of Worldwide Gross of Films", 
-     xlab = "Worldwide Gross of Films", 
-     ylab = "Number of Films", 
-     col = c("red", "orange", "yellow", "green", "purple", "magenta"))
-```
+
 
 ```{r}
 library(ggplot2)
