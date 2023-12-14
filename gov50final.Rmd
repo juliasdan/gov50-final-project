@@ -93,7 +93,7 @@ hist(gov50movies$worldwide_gross,
      col = c("red", "orange", "yellow", "green", "purple", "magenta"))
 ```
 
-To remedy my skewed data and create an output of meaningful results, I decided to use the log function on my worldwide_gross column. The resulting model summary table shows that, compared to the production cost, the worldwide gross is far more statistically significant. The positive value of 11.912 obtained also indicates a positive slope meaning that there is a strong correlation between a movie that does well at the box office and a high Metascore. It also represents the estimated change of worldwide gross as it relates to incremental changes in budget. Moreover, since the stars indicate that p < 0.001, it is suggested that the null hypothesis will be rejected since worldwide gross is associated with a significant effect on the dependent variable (Metascore).  
+To remedy my skewed data and create an output of meaningful results, I decided to use the log function on my worldwide_gross column. The resulting model summary table shows that, compared to the production cost, the worldwide gross is far more statistically significant. The positive value of 11.912 obtained also indicates a positive slope meaning that there is a strong correlation between a movie that does well at the box office and a high Metascore. It also represents the estimated change of worldwide gross as it relates to incremental changes in budget. Moreover, since the stars indicate that p < 0.001, it is suggested that the null hypothesis will be rejected since worldwide gross is associated with a significant effect on the dependent variable (Metascore).
 
 ```{r using-log}
 ## Because my data is too skewed, I am calibrating using log
